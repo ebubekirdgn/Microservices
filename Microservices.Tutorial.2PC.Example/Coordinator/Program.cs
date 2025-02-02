@@ -1,34 +1,47 @@
+using Coordinator.Models.Contexts;
+using Coordinator.Services;
+using Coordinator.Services.Abstractions;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+builder.Services.AddDbContext<TwoPhaseCommitContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("SQLServer")));
+
+builder.Services.AddHttpClient("OrderAPI", client => client.BaseAddress = new("https://localhost:7268/"));
+builder.Services.AddHttpClient("StockAPI", client => client.BaseAddress = new("https://localhost:7066/"));
+builder.Services.AddHttpClient("PaymentAPI", client => client.BaseAddress = new("https://localhost:7226/"));
+
+builder.Services.AddTransient<ITransactionService, TransactionService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-
-app.UseHttpsRedirection();
-
-var summaries = new[]
+if (app.Environment.IsDevelopment())
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
-app.MapGet("/weatherforecast", () =>
+
+app.MapGet("/create-order-transaction", async (ITransactionService transactionService) =>
 {
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
+    //Phase 1 - Prepare
+    var transactionId = await transactionService.CreateTransactionAsync();
+    await transactionService.PrepareServicesAsync(transactionId);
+    bool transactionState = await transactionService.CheckReadyServicesAsync(transactionId);
+
+    if (transactionState)
+    {
+        //Phase 2 - Commit
+        await transactionService.CommitAsync(transactionId);
+        transactionState = await transactionService.CheckTransactionStateServicesAsync(transactionId);
+    }
+
+    if (!transactionState)
+        await transactionService.RollbackAsync(transactionId);
 });
 
-app.Run();
 
-internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+app.Run();
