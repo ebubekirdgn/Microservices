@@ -1,0 +1,6 @@
+@TransactionCoordinator.API_HostAddress = http://localhost:5015
+
+GET {{TransactionCoordinator.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

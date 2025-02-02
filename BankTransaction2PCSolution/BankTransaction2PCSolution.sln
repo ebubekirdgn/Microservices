@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35707.178 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransactionCoordinator.API", "TransactionCoordinator.API\TransactionCoordinator.API.csproj", "{C13477E0-86F2-4B80-81C9-60EE2505EFBC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankA.API", "BankA.API\BankA.API.csproj", "{EEA87849-EBD7-4EC3-A3BF-1D7F66B278E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankB.API", "BankB.API\BankB.API.csproj", "{07BAB5F1-0E56-4195-A7EA-E4B6D9F58993}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C13477E0-86F2-4B80-81C9-60EE2505EFBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C13477E0-86F2-4B80-81C9-60EE2505EFBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C13477E0-86F2-4B80-81C9-60EE2505EFBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C13477E0-86F2-4B80-81C9-60EE2505EFBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEA87849-EBD7-4EC3-A3BF-1D7F66B278E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEA87849-EBD7-4EC3-A3BF-1D7F66B278E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEA87849-EBD7-4EC3-A3BF-1D7F66B278E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEA87849-EBD7-4EC3-A3BF-1D7F66B278E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07BAB5F1-0E56-4195-A7EA-E4B6D9F58993}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07BAB5F1-0E56-4195-A7EA-E4B6D9F58993}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07BAB5F1-0E56-4195-A7EA-E4B6D9F58993}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07BAB5F1-0E56-4195-A7EA-E4B6D9F58993}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
