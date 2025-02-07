@@ -1,18 +1,27 @@
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using Order.API.Consumers;
 using Order.API.Models.Contexts;
 using Order.API.ViewModels;
+using Shared;
 using Shared.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<OrderAPIDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MSSQLServer")));
+
 builder.Services.AddMassTransit(configurator =>
 {
-    configurator.UsingRabbitMq((context, cfg) =>
+    configurator.AddConsumer<PaymentCompletedEventConsumer>();
+    configurator.AddConsumer<PaymentFailedEventConsumer>();
+    configurator.AddConsumer<StockNotReservedEventConsumer>();
+    configurator.UsingRabbitMq((context, _configure) =>
     {
-        cfg.Host(builder.Configuration["RabbitMQ"]);
+        _configure.Host(builder.Configuration["RabbitMQ"]);
+        _configure.ReceiveEndpoint(RabbitMQSettings.Order_PaymentCompletedEventQueue, e => e.ConfigureConsumer<PaymentCompletedEventConsumer>(context));
+        _configure.ReceiveEndpoint(RabbitMQSettings.Order_PaymentFailedEventQueue, e => e.ConfigureConsumer<PaymentFailedEventConsumer>(context));
+        _configure.ReceiveEndpoint(RabbitMQSettings.Order_StockNotReservedEventQueue, e => e.ConfigureConsumer<StockNotReservedEventConsumer>(context));
     });
 });
 

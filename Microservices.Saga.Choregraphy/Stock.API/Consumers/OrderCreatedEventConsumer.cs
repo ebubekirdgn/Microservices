@@ -22,22 +22,20 @@ namespace Stock.API.Consumers
 
             foreach (var orderItem in context.Message.OrderItems)
             {
-                //Siparişteki her bir ürün için stok kontrolü yapılacak...
                 stockResult.Add(await (await collection.FindAsync(s => s.ProductId == orderItem.ProductId.ToString() && s.Count > (long)orderItem.Count)).AnyAsync());
             }
 
-            if (stockResult.TrueForAll(s => s.Equals(true))) //Eğer tüm stocklar yeterli ise...
+            if (stockResult.TrueForAll(s => s.Equals(true)))
             {
                 //Stock güncellemesi...
                 foreach (var orderItem in context.Message.OrderItems)
                 {
                     Models.Stock stock = await (await collection.FindAsync(s => s.ProductId == orderItem.ProductId.ToString())).FirstOrDefaultAsync();
-                    stock.Count -= orderItem.Count; //Stoktan düşülmesi
+                    stock.Count -= orderItem.Count;
 
                     await collection.FindOneAndReplaceAsync(x => x.ProductId == orderItem.ProductId.ToString(), stock);
                 }
                 //Payment'ı uyaracak event'in fırlatılması...
-                //Payment API'ya StockReservedEvent gönderilecek...
                 var sendEndpoint = await sendEndpointProvider.GetSendEndpoint(new Uri($"queue:{RabbitMQSettings.Payment_StockReservedEventQueue}"));
                 StockReservedEvent stockReservedEvent = new()
                 {
@@ -52,7 +50,6 @@ namespace Stock.API.Consumers
             {
                 //Stok işlemi başarısız...
                 //Order'ı uyaracak event fırlatılacaktır.
-                //Order API'ya StockNotReservedEvent gönderilecek...
                 StockNotReservedEvent stockNotReservedEvent = new()
                 {
                     BuyerId = context.Message.BuyerId,
