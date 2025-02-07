@@ -6,6 +6,7 @@ namespace Shared.Events
     {
         //Ödeme başarısız olduğunda tetiklenecek event
         public Guid OrderId { get; set; }
+
         public string Message { get; set; }
         public List<OrderItemMessage> OrderItems { get; set; } //Siparişteki ürünler
     }

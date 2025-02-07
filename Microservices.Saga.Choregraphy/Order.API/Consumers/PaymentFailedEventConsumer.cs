@@ -1,5 +1,4 @@
 ﻿using MassTransit;
-using Microsoft.EntityFrameworkCore;
 using Order.API.Models.Contexts;
 using Shared.Events;
 
