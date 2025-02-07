@@ -1,6 +1,6 @@
 @Order.API_HostAddress = http://localhost:5123
 
-GET {{Order.API_HostAddress}}/weatherforecast/
+GET {{Order.API_HostAddress}}/swagger/
 Accept: application/json
 
 ###
