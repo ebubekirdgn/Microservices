@@ -52,6 +52,7 @@ namespace Stock.API.Consumers
             {
                 //Stok işlemi başarısız...
                 //Order'ı uyaracak event fırlatılacaktır.
+                //Order API'ya StockNotReservedEvent gönderilecek...
                 StockNotReservedEvent stockNotReservedEvent = new()
                 {
                     BuyerId = context.Message.BuyerId,
