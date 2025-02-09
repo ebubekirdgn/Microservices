@@ -1,7 +1,9 @@
-using SagaStateMachine.Service;
+using SagaStateMachine.Service.Extensions;
+using SagaStateMachine.Service.StateDbContexts;
 
 var builder = Host.CreateApplicationBuilder(args);
-builder.Services.AddHostedService<Worker>();
+
+builder.Services.AddCustomMassTransit<OrderStateDbContext>(builder.Configuration);
 
 var host = builder.Build();
 host.Run();

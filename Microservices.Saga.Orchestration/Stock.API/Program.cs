@@ -9,7 +9,6 @@ builder.Services.AddMassTransit(configurator =>
     configurator.UsingRabbitMq((context, _configure) =>
     {
         _configure.Host(builder.Configuration["RabbitMQ"]);
-
     });
 });
 
