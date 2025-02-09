@@ -6,4 +6,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+	<ItemGroup>
+		<PackageReference Include="MassTransit" Version="8.3.6" />
+	</ItemGroup>
 </Project>
