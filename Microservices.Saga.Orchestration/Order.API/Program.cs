@@ -1,5 +1,7 @@
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Order.API.Consumers;
 using Order.API.Context;
 using Order.API.ViewModels;
 using Shared.OrderEvents;
@@ -12,9 +14,16 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddMassTransit(configurator =>
 {
+    configurator.AddConsumer<OrderCompletedEventConsumer>();
+    configurator.AddConsumer<OrderFailedEventConsumer>();
+
     configurator.UsingRabbitMq((context, _configure) =>
     {
         _configure.Host(builder.Configuration["RabbitMQ"]);
+
+        _configure.ReceiveEndpoint(RabbitMQSettings.Order_OrderCompletedEventQueue, e => e.ConfigureConsumer<OrderCompletedEventConsumer>(context));
+
+        _configure.ReceiveEndpoint(RabbitMQSettings.Order_OrderFailedEventQueue, e => e.ConfigureConsumer<OrderFailedEventConsumer>(context));
     });
 });
 
@@ -44,7 +53,6 @@ app.MapPost("/create-order", async (CreateOrderVM model, OrderDbContext context,
     await context.Orders.AddAsync(order);
     await context.SaveChangesAsync();
 
-    //
     OrderStartedEvent orderStartedEvent = new()
     {
         BuyerId = model.BuyerId,
@@ -58,9 +66,9 @@ app.MapPost("/create-order", async (CreateOrderVM model, OrderDbContext context,
         }).ToList()
     };
 
-    var sendEndpoint = await sendEndpointProvider.GetSendEndpoint(new Uri($"queue:{RabbitMQSettings.StateMachineQueue}")); // Bütün sürecin baþladýðý nokta. StateMachineQueue'ya mesaj gönderiyoruz.
-    await sendEndpoint.Send<OrderStartedEvent>(orderStartedEvent);  // StateMachineQueue'ya OrderStartedEvent tipinde bir mesaj gönderiyoruz.
-    //Buradan sonraki kýsým artýk state machine tarafýnda gerçekleþecek.
+    var sendEndpoint = await sendEndpointProvider.GetSendEndpoint(new Uri($"queue:{RabbitMQSettings.StateMachineQueue}"));
+    await sendEndpoint.Send<OrderStartedEvent>(orderStartedEvent);
+
 });
 
 app.Run();

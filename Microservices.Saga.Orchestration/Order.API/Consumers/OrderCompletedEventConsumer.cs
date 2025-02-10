@@ -8,7 +8,6 @@ namespace Order.API.Consumers
     {
         public async Task Consume(ConsumeContext<OrderCompletedEvent> context)
         {
-            //Burada OrderCompletedEvent mesajını alıp OrderId'si ile Order tablosundaki ilgili siparişi bulup durumunu Completed yapacağız.
             Order.API.Models.Order order = await orderDbContext.Orders.FindAsync(context.Message.OrderId);
             if (order != null)
             {

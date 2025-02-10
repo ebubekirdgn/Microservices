@@ -11,7 +11,6 @@ namespace Stock.API.Consumers
     {
         public async Task Consume(ConsumeContext<OrderCreatedEvent> context)
         {
-            //Burada OrderCreatedEvent mesajını alıp OrderItems'larındaki ürünlerin stoklarını kontrol edeceğiz.
             List<bool> stockResults = new();
             var stockCollection = mongoDbService.GetCollection<Stock.API.Models.Stock>();
 
@@ -19,7 +18,6 @@ namespace Stock.API.Consumers
                 stockResults.Add(await (await stockCollection.FindAsync(s => s.ProductId == orderItem.ProductId && s.Count >=
 (long)orderItem.Count)).AnyAsync());
 
-            //Eğer tüm ürünlerin stokları yeterli ise stokları düşüreceğiz ve StockReservedEvent mesajını göndereceğiz.
             var sendEndpoint = await sendEndpointProvider.GetSendEndpoint(new Uri($"queue:{RabbitMQSettings.StateMachineQueue}"));
             if (stockResults.TrueForAll(s => s.Equals(true)))
             {

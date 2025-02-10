@@ -12,7 +12,7 @@ using SagaStateMachine.Service.StateDbContexts;
 namespace SagaStateMachine.Service.Migrations
 {
     [DbContext(typeof(OrderStateDbContext))]
-    [Migration("20250209205419_init1")]
+    [Migration("20250210214348_init1")]
     partial class init1
     {
         /// <inheritdoc />
