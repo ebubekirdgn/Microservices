@@ -13,6 +13,6 @@ namespace Shared.PaymentEvents
         }
 
         public decimal TotalPrice { get; set; }
-        public List<OrderItemMessage> OrderItems { get; set; }
+        public List<OrderItemMessage> OrderItems { get; set; } 
     }
 }
