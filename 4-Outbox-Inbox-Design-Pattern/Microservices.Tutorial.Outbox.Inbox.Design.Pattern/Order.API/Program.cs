@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Order.API.Models.Contexts;
 using Order.API.Models.Entities;
 using Order.API.ViewModels;
+using Shared;
 using Shared.Events;
 using System.Text.Json;
 
@@ -61,7 +62,7 @@ app.MapPost("/create-order", async (CreateOrderVM model, OrderDbContext orderDbC
     #region Outbox Pattern Olmaksýzýn!
     //var sendEndpoint = await sendEndpointProvider.GetSendEndpoint(new Uri($"queue:{RabbitMQSettings.Stock_OrderCreatedEvent}"));
     //await sendEndpoint.Send<OrderCreatedEvent>(orderCreatedEvent);
-    #endregion Outbox Pattern Olmaksýzýn!
+    #endregion
     #region Outbox Pattern Çalýþmasý
     OrderOutbox orderOutbox = new()
     {
@@ -74,7 +75,7 @@ app.MapPost("/create-order", async (CreateOrderVM model, OrderDbContext orderDbC
     };
     await orderDbContext.OrderOutboxes.AddAsync(orderOutbox);
     await orderDbContext.SaveChangesAsync();
-    #endregion Outbox Pattern Çalýþmasý
+    #endregion
 });
 
 app.Run();

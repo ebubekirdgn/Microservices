@@ -14,6 +14,7 @@ namespace Stock.Service.Consumers
             var result = await stockDbContext.OrderInboxes.AnyAsync(i => i.IdempotentToken == context.Message.IdempotentToken);
             if (!result)
             {
+
                 await stockDbContext.OrderInboxes.AddAsync(new()
                 {
                     Processed = false,
@@ -23,6 +24,7 @@ namespace Stock.Service.Consumers
 
                 await stockDbContext.SaveChangesAsync();
             }
+
 
             List<OrderInbox> orderInboxes = await stockDbContext.OrderInboxes
                 .Where(i => i.Processed == false)

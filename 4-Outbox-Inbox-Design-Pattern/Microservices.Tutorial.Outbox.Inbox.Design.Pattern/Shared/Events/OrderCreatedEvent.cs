@@ -1,5 +1,4 @@
 ﻿using Shared.Datas;
-
 namespace Shared.Events
 {
     public class OrderCreatedEvent
@@ -10,4 +9,5 @@ namespace Shared.Events
         public List<OrderItem> OrderItems { get; set; }
         public Guid IdempotentToken { get; set; }
     }
+
 }
