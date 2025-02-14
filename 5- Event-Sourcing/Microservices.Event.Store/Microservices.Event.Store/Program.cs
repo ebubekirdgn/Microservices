@@ -1,11 +1,11 @@
 ﻿#region İnceleme
+
 using EventStore.Client;
 using System.Text.Json;
 
 string connectionString = "esdb://admin:changeit@localhost:2113?tls=false&tlsVerifyCert=false";
 var settings = EventStoreClientSettings.Create(connectionString);
 var client = new EventStoreClient(settings);
-
 
 OrderPlacedEvent orderPlacedEvent = new()
 {
@@ -50,15 +50,13 @@ await client.SubscribeToStreamAsync(
 
 Console.Read();
 
-class OrderPlacedEvent
+internal class OrderPlacedEvent
 {
     public int OrderId { get; set; }
     public int TotalAmount { get; set; }
 }
+
 #endregion
-
-
-
 
 //#region Bakiye Örnek
 
@@ -166,7 +164,6 @@ class OrderPlacedEvent
 //    );
 
 //Console.Read();
-
 
 //class EventStoreService
 //{
