@@ -41,7 +41,7 @@ namespace Product.Application.Controllers
                })
            });
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(CreateProduct));
         }
 
     }

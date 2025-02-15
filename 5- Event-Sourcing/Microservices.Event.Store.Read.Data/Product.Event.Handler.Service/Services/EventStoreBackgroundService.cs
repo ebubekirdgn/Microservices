@@ -7,7 +7,7 @@ using System.Text.Json;
 
 namespace Product.Event.Handler.Service.Services
 {
-    public class EventStoreService(IEventStoreService eventStoreService,IMongoDBService mongoDBService) : BackgroundService
+    public class EventStoreBackgroundService(IEventStoreService eventStoreService,IMongoDBService mongoDBService) : BackgroundService
     {
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
