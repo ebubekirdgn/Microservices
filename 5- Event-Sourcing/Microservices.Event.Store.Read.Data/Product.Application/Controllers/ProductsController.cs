@@ -29,7 +29,7 @@ namespace Product.Application.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateProduct(CreateProductVM model)
         {
-           await eventStoreService.AppendToStreamAsync("product-stream", new List<EventData>
+           await eventStoreService.AppendToStreamAsync("products-stream", new List<EventData>
            {
                eventStoreService.GenerateEventData(new NewProductAddedEvent
                {
