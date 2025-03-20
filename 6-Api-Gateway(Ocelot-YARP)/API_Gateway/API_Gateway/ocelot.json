@@ -6,15 +6,7 @@
             "DownstreamHostAndPorts": [
                 {
                     "Host": "localhost",
-                    "Port": 7000
-                },
-                {
-                    "Host": "localhost",
-                    "Port": 7001
-                },
-                {
-                    "Host": "localhost",
-                    "Port": 7002
+                    "Port": 7152
                 }
             ],
             "UpstreamPathTemplate": "/api1",
@@ -22,13 +14,6 @@
             "LoadBalancerOptions": {
                 "Type": "RoundRobin"
             }
-            //"AuthenticationOptions": {
-            //  "AllowedScopes": [],
-            //  "AuthenticationProviderKey": "Bearer"
-            //},
-            //"RouteClaimsRequirement": {
-            //  "Role": "Admin"
-            //}
         },
         {
             "DownstreamPathTemplate": "/",
