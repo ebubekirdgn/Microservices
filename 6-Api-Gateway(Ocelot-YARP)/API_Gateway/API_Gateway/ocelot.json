@@ -7,12 +7,20 @@
                 {
                     "Host": "localhost",
                     "Port": 7152
-                }
+                },
+              
             ],
             "UpstreamPathTemplate": "/api1",
             "UpstreamHttpMethod": [ "GET", "POST" ],
-            "LoadBalancerOptions": {
-                "Type": "RoundRobin"
+            //"LoadBalancerOptions": {
+            //    "Type": "RoundRobin"
+            //}
+            "AuthenticationOptions": {
+              "AllowedScopes": [],
+              "AuthenticationProviderKey": "Bearer"
+            },
+            "RouteClaimsRequirement": {
+              "Role": "Admin"
             }
         },
         {
